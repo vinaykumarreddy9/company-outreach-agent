@@ -26,14 +26,14 @@ services:
   # Frontend Static Site
   - type: web
     name: b2b-agent-ui
-    env: static
+    runtime: static
     buildCommand: cd frontend && npm install && npm run build
-    publishPath: frontend/build
+    staticPublishPath: frontend/build
     envVars:
       - key: REACT_APP_API_URL
         fromService:
           type: web
-          name: b2b-agent-api
+          name: company-outreach.digiotai
           property: host
     routes:
       - type: rewrite
