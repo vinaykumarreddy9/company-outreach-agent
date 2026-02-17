@@ -505,7 +505,7 @@ const CampaignWorkspace = () => {
                             <div className="flex items-center gap-3">
                                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
                                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                    Orchestration Phase 0{isMonitoring ? '2' : '1'}
+                                    Orchestration Phase {isMonitoring ? '03' : (data.emails.length > 0 ? '02' : '01')}
                                 </span>
                                 {hasMission && (
                                     <div className="flex gap-1.5">
@@ -543,7 +543,7 @@ const CampaignWorkspace = () => {
                     )}
 
                     <div className="flex items-center gap-4">
-                        {hasMission && data.emails.length > 0 && !isMonitoring && (
+                        {data.emails.length > 0 && (
                             <motion.div 
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -552,8 +552,11 @@ const CampaignWorkspace = () => {
                                 <div className="hidden lg:flex flex-col items-end mr-4">
                                      <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Intelligence Pulse</span>
                                      <span className="text-[11px] font-bold text-slate-600 flex items-center gap-1.5">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                        Monitoring Active
+                                        <div className={cn(
+                                            "w-1.5 h-1.5 rounded-full animate-pulse",
+                                            isMonitoring ? "bg-emerald-500" : "bg-blue-500"
+                                        )} />
+                                        {isMonitoring ? 'Monitoring Active' : 'Intelligence Synced'}
                                      </span>
                                 </div>
                             </motion.div>

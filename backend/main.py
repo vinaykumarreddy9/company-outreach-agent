@@ -169,15 +169,19 @@ async def launch_campaign(campaign_id: str, req: UserInput):
     
     result = await app_workflow.ainvoke(initial_state)
     
+    # Update Status in DB to trigger Monitoring Phase in UI
+    await update_campaign_status(campaign_id, "MONITORING_ACTIVE")
+    
     if result["errors"]:
         print(f"Workflow errors: {result['errors']}")
         
     return CampaignResponse(
         campaign_id=result.get("campaign_id", campaign_id),
-        status="planned",
+        status="MONITORING_ACTIVE",
         campaign=result["campaign_data"],
         target_companies=result.get("target_companies", []),
         decision_makers=result.get("decision_makers", []),
+        email_draft_ids=[], # Deprecated in favor of emails service
         email_drafts=result.get("email_drafts", []),
         scheduled_emails=result.get("scheduled_emails", [])
     )

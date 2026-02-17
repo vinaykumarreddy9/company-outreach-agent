@@ -158,6 +158,20 @@ async def save_email_draft(decision_maker_id: str, subject: str, body: str, reci
     try:
         async with conn:
             async with conn.cursor() as cur:
+                # Idempotency check: Don't create duplicate 'initial' drafts for the same DM
+                await cur.execute(
+                    "SELECT id FROM emails WHERE decision_maker_id = %s AND type = 'initial' AND direction = 'outbound'",
+                    (decision_maker_id,)
+                )
+                existing = await cur.fetchone()
+                if existing:
+                    # Update existing draft body instead of creating new one
+                    await cur.execute(
+                        "UPDATE emails SET subject = %s, body = %s, recipient = %s WHERE id = %s",
+                        (subject, body, recipient, existing['id'])
+                    )
+                    return str(existing['id'])
+
                 email_id = str(uuid.uuid4())
                 await cur.execute(
                     """INSERT INTO emails 
