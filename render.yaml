@@ -1,0 +1,41 @@
+services:
+  # Backend API Service
+  - type: web
+    name: b2b-agent-api
+    env: python
+    buildCommand: pip install -r requirements.txt && playwright install --with-deps chromium
+    startCommand: gunicorn -w 2 -k uvicorn.workers.UvicornWorker backend.main:app
+    envVars:
+      - key: BUNDLE_WORKERS
+        value: "true"
+      - key: RENDER
+        value: "true"
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - fromContext: env
+        key: NEON_DB_URL
+      - fromContext: env
+        key: OPENAI_API_KEY
+      - fromContext: env
+        key: TAVILY_API_KEY
+      - fromContext: env
+        key: EMAIL_USER
+      - fromContext: env
+        key: EMAIL_PASSWORD
+
+  # Frontend Static Site
+  - type: static
+    name: b2b-agent-ui
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: b2b-agent-api
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
