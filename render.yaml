@@ -33,7 +33,7 @@ services:
       - key: REACT_APP_API_URL
         fromService:
           type: web
-          name: b2b-agent-api
+          name: company-outreach.digiotai
           property: host
     routes:
       - type: rewrite
