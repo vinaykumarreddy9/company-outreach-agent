@@ -1,0 +1,8 @@
+{
+  "short_name": "Outreach",
+  "name": "Company Outreach Agent",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
