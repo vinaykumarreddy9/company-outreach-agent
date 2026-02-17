@@ -1,8 +1,9 @@
 services:
   # Backend API Service
   - type: web
-    name: b2b-agent-api
+    name: company-outreach-agent-api
     env: python
+    plan: free
     buildCommand: pip install -r requirements.txt && playwright install --with-deps chromium
     startCommand: gunicorn -w 2 -k uvicorn.workers.UvicornWorker backend.main:app
     envVars:
@@ -25,7 +26,7 @@ services:
 
   # Frontend Static Site
   - type: web
-    name: b2b-agent-ui
+    name: company-outreach.digiotai
     runtime: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build
@@ -33,7 +34,7 @@ services:
       - key: REACT_APP_API_URL
         fromService:
           type: web
-          name: company-outreach.digiotai
+          name: company-outreach-agent-api
           property: host
     routes:
       - type: rewrite
