@@ -24,11 +24,11 @@ services:
         key: EMAIL_PASSWORD
 
   # Frontend Static Site
-  - type: static
+  - type: web
     name: b2b-agent-ui
     env: static
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/build
+    publishPath: frontend/build
     envVars:
       - key: REACT_APP_API_URL
         fromService:
