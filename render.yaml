@@ -4,7 +4,7 @@ services:
     name: company-outreach-agent-api
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt && playwright install --with-deps chromium
+    buildCommand: pip install -r requirements.txt && playwright install chromium
     startCommand: gunicorn -w 2 -k uvicorn.workers.UvicornWorker backend.main:app
     envVars:
       - key: BUNDLE_WORKERS
