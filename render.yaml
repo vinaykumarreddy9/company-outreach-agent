@@ -12,16 +12,16 @@ services:
         value: "true"
       - key: PYTHON_VERSION
         value: 3.10.0
-      - fromContext: env
-        key: NEON_DB_URL
-      - fromContext: env
-        key: OPENAI_API_KEY
-      - fromContext: env
-        key: TAVILY_API_KEY
-      - fromContext: env
-        key: EMAIL_USER
-      - fromContext: env
-        key: EMAIL_PASSWORD
+      - key: NEON_DB_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
 
   # Frontend Static Site
   - type: web
@@ -33,7 +33,7 @@ services:
       - key: REACT_APP_API_URL
         fromService:
           type: web
-          name: company-outreach.digiotai
+          name: b2b-agent-api
           property: host
     routes:
       - type: rewrite
